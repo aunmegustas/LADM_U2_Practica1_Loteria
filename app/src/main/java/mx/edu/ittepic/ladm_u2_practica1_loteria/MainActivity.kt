@@ -1,19 +1,17 @@
 package mx.edu.ittepic.ladm_u2_practica1_loteria
 
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
-    private val a: MainActivity = this
-    private var baraja: ArrayList<Int> = ArrayList<Int>()
 
-    private val audCartas: Array<Int> = arrayOf(R.drawable.carta1)
-    private val imgCartas: Array<Int> = arrayOf(
+    val audCartas: Array<Int> = arrayOf()
+    val imgCartas: Array<Int> = arrayOf(
         R.drawable.carta1, R.drawable.carta2,R.drawable.carta3,R.drawable.carta4,R.drawable.carta5,R.drawable.carta6,R.drawable.carta7,R.drawable.carta8,R.drawable.carta9,R.drawable.carta10,
         R.drawable.carta11, R.drawable.carta12,R.drawable.carta13,R.drawable.carta14,R.drawable.carta15,R.drawable.carta16,R.drawable.carta17,R.drawable.carta18,R.drawable.carta19,R.drawable.carta20,
         R.drawable.carta21, R.drawable.carta22,R.drawable.carta23,R.drawable.carta24,R.drawable.carta25,R.drawable.carta26,R.drawable.carta27,R.drawable.carta28,R.drawable.carta29,R.drawable.carta30,
@@ -21,84 +19,54 @@ class MainActivity : AppCompatActivity() {
         R.drawable.carta41, R.drawable.carta42,R.drawable.carta43,R.drawable.carta44,R.drawable.carta45,R.drawable.carta46,R.drawable.carta47,R.drawable.carta48,R.drawable.carta49,R.drawable.carta50,
         R.drawable.carta51, R.drawable.carta52,R.drawable.carta53,R.drawable.carta54)
 
-    var mediaPlayer : MediaPlayer?=null
-    var detener = false
-    var scope = CoroutineScope(Job()+Dispatchers.Main)
-    var corriendo = true
-    var indice = 1
-    var contador = 1
+    var index = arrayOf(0,1,2,3,4,5,6,7,8,9,10,
+                        11,12,13,14,15,16,17,18,19,20,
+                        21,22,23,24,25,26,27,28,29,30,
+                        31,32,33,34,35,36,37,38,39,40,
+                        41,42,43,44,45,46,47,48,49,50,
+                        51,52,53)
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val randomIndex = scope.launch(EmptyCoroutineContext, CoroutineStart.LAZY){
+        index.shuffle()
+    }
+    var thread = HiloPartida(this)
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        a.title = "Loteria!"
-
-        var thread = HiloPartida(a)
-        rep.setOnClickListener {
-            loteria.text = "Loteria!"
-            corriendo = true
-            contador = 1
-            mensaje2.text = "Juego #${indice}"
-            val jobCoroutine = scope.launch(EmptyCoroutineContext, CoroutineStart.LAZY) {
-                while(corriendo){
-                    (0 .. audCartas.size).forEach(){
-                        if(detener){
-                            delay(6000L)
-                        }else{
-                            try{
-                                mediaPlayer = MediaPlayer.create(a, audCartas[baraja[it]])
-                            }catch (e : Exception){}
-                            try{
-                                runOnUiThread{
-                                    carta.setImageResource(imgCartas[baraja[it]])
-                                    mediaPlayer?.start()
-                                    mensaje.text = "Se juega ${contador++} cartas."
-                                }
-                                delay(3000L)
-                            }catch (e : Exception){}
-                            mediaPlayer?.release()
-                        }
-                    }
-                    corriendo = false
-                    indice++
-                    delay(1000L)
-                }
-            }
-            if(corriendo){
-                barajear()
-                jobCoroutine.start()
-                rep.isEnabled = false
-                loteria.isEnabled = true
-                return@setOnClickListener
-            }
+        iniciar.setOnClickListener{
+            thread.execute = true
+            randomIndex.start()
+            thread.start()
         }
 
-        loteria.setOnClickListener {
-            if(!detener){
-                detener = true
-                loteria.text = "Restantes"
-                mensaje.text = "Loteria!"
-                setTitle("Loteria han ganado!")
-                return@setOnClickListener
+        detener.setOnClickListener{
+            if (!thread.execute) texto.text = "Aún no se inicia el juego."
+            else if(thread.isPause()){
+                thread.resumeThread()
+                detener.text = "Detener Juego"
             }else{
-                detener = false
-                loteria.text = "Espera a que termine."
-                rep.isEnabled = true
-                return@setOnClickListener
+                detener.text = "Reanudar Juego"
+                thread.pauseThread()
             }
+        }
 
+        terminar.setOnClickListener {
+            if(thread.cartasRestantes == 0){
+                texto.text = "El juego ya terminó."
+            }else if(thread.cartasRestantes == 53){
+                texto.text = "El juego aún no empieza."
+            }else if(thread.isPause()){
+                texto.text = "Las cartas que sobraron fueron ${thread.cartasRestantes}"
+                thread.endGame = true
+                thread.resumeThread()
+            }else{
+                Toast.makeText(this, "No está pausado.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
-    private fun barajear(){
-        baraja = ArrayList<Int>()
-        for(m in audCartas) baraja.add(azar(baraja))
-    }
-
-    private fun azar(baraja : ArrayList<Int>) : Int {
-        var random = Random.nextInt(54)
-        while(!baraja.contains(random)) return random
-        return azar(baraja)
-    }
 }
