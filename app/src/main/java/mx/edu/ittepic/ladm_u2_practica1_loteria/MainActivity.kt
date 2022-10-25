@@ -11,7 +11,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 class MainActivity : AppCompatActivity() {
 
     val audCartas: Array<Int> = arrayOf(R.raw.uno, R.raw.dos, R.raw.tres, R.raw.cuatro, R.raw.cinco, R.raw.seis, R.raw.siete, R.raw.ocho, R.raw.nueve, R.raw.diez,
-                                        R.raw.once, R.raw.doce, R.raw.trece, R.raw.catorce, R.raw.quince, R.raw.dieciseis, R.raw.dieciocho, R.raw.diecinueve, R.raw.veinte,
+                                        R.raw.once, R.raw.doce, R.raw.trece, R.raw.catorce, R.raw.quince, R.raw.dieciseis, R.raw.diecisiete, R.raw.dieciocho, R.raw.diecinueve, R.raw.veinte,
                                         R.raw.veintiuno, R.raw.veintidos, R.raw.veintitres, R.raw.veinticuatro, R.raw.veinticinco, R.raw.veintiseis, R.raw.veintisiete, R.raw.veintiocho, R.raw.veintinueve, R.raw.treinta,
                                         R.raw.treintauno, R.raw.treintados, R.raw.treintatres, R.raw.treintacuatro, R.raw.treintacinco, R.raw.treintaseis, R.raw.treintasiete, R.raw.treintaocho, R.raw.treintanueve, R.raw.cuarenta,
                                         R.raw.cuarentauno, R.raw.cuarentados, R.raw.cuarentatres, R.raw.cuarentacuatro, R.raw.cuarentacinco, R.raw.cuarentaseis, R.raw.cuarentasiete, R.raw.cuarentaocho, R.raw.cuarentanueve, R.raw.cincuenta,
