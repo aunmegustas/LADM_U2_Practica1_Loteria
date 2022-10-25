@@ -2,6 +2,7 @@ package mx.edu.ittepic.ladm_u2_practica1_loteria
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -60,17 +61,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         terminar.setOnClickListener {
+            thread.finishThread()
             if(thread.cartasRestantes == 0){
                 texto.text = "El juego ya terminó."
             }else if(thread.cartasRestantes == 53){
                 texto.text = "El juego aún no empieza."
-            }else if(thread.isPause()){
-                texto.text = "Las cartas que sobraron fueron ${thread.cartasRestantes}"
-                thread.endGame = true
-                thread.resumeThread()
             }else{
-                Toast.makeText(this, "No está pausado.", Toast.LENGTH_LONG).show()
+                if(thread.isPause()){
+                    texto.text = "Las cartas que sobraron fueron ${thread.cartasRestantes}"
+                    thread.endGame = true
+                    thread.finishThread()
+                    imagen.setImageResource(android.R.color.transparent)
+                }else{
+                    Toast.makeText(this, "No está pausado.", Toast.LENGTH_LONG).show()
+                }
             }
+
         }
     }
 
