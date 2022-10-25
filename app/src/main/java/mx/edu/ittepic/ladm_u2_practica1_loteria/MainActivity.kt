@@ -10,7 +10,12 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 class MainActivity : AppCompatActivity() {
 
-    val audCartas: Array<Int> = arrayOf()
+    val audCartas: Array<Int> = arrayOf(R.raw.uno, R.raw.dos, R.raw.tres, R.raw.cuatro, R.raw.cinco, R.raw.seis, R.raw.siete, R.raw.ocho, R.raw.nueve, R.raw.diez,
+                                        R.raw.once, R.raw.doce, R.raw.trece, R.raw.catorce, R.raw.quince, R.raw.dieciseis, R.raw.dieciocho, R.raw.diecinueve, R.raw.veinte,
+                                        R.raw.veintiuno, R.raw.veintidos, R.raw.veintitres, R.raw.veinticuatro, R.raw.veinticinco, R.raw.veintiseis, R.raw.veintisiete, R.raw.veintiocho, R.raw.veintinueve, R.raw.treinta,
+                                        R.raw.treintauno, R.raw.treintados, R.raw.treintatres, R.raw.treintacuatro, R.raw.treintacinco, R.raw.treintaseis, R.raw.treintasiete, R.raw.treintaocho, R.raw.treintanueve, R.raw.cuarenta,
+                                        R.raw.cuarentauno, R.raw.cuarentados, R.raw.cuarentatres, R.raw.cuarentacuatro, R.raw.cuarentacinco, R.raw.cuarentaseis, R.raw.cuarentasiete, R.raw.cuarentaocho, R.raw.cuarentanueve, R.raw.cincuenta,
+                                        R.raw.cincuentauno, R.raw.cincuentados, R.raw.cincuentatres, R.raw.cincuentacuatro)
     val imgCartas: Array<Int> = arrayOf(
         R.drawable.carta1, R.drawable.carta2,R.drawable.carta3,R.drawable.carta4,R.drawable.carta5,R.drawable.carta6,R.drawable.carta7,R.drawable.carta8,R.drawable.carta9,R.drawable.carta10,
         R.drawable.carta11, R.drawable.carta12,R.drawable.carta13,R.drawable.carta14,R.drawable.carta15,R.drawable.carta16,R.drawable.carta17,R.drawable.carta18,R.drawable.carta19,R.drawable.carta20,
